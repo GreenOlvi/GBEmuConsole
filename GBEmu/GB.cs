@@ -2,10 +2,17 @@
 {
     public class GB
     {
+        public GB(ICartridge cartridge)
+        {
+            _memory = new MemoryMap(cartridge);
+        }
+
         private readonly Register16 _af = new Register16();
         private readonly Register16 _bc = new Register16();
         private readonly Register16 _de = new Register16();
         private readonly Register16 _hl = new Register16();
+
+        private readonly MemoryMap _memory;
 
         //8-bit registers
         public byte A { get => _af.Hi; private set => _af.Hi = value; }
@@ -26,5 +33,7 @@
         public ushort PC { get; private set; }
 
         public CpuFlags Flags { get => (CpuFlags)F; }
+
+        public IReadOnlyMemory Memory => _memory;
     }
 }

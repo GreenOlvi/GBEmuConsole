@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Collections;
 
 namespace GBEmu
 {
-    public class Rom : IRom
+    public class Rom : IReadOnlyMemory
     {
         public static Rom ReadFromFile(string fileName)
         {
@@ -19,9 +20,10 @@ namespace GBEmu
 
         private readonly byte[] _bytes;
 
-        public byte GetByte(int address)
-        {
-            return _bytes[address];
-        }
+        public byte GetByte(uint address) => _bytes[address];
+
+        public IEnumerator<byte> GetEnumerator() => ((IEnumerable<byte>)_bytes).GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => _bytes.GetEnumerator();
     }
 }
