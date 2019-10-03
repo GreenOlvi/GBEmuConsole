@@ -31,5 +31,26 @@ namespace GBTests.Utils
             Action a = () => ByteUtils.HexStringToBytes(null).Should();
             a.Should().ThrowExactly<ArgumentNullException>();
         }
+
+        private static IEnumerable<TestCaseData> BytesToHexStringTestCases()
+        {
+            yield return new TestCaseData(new byte[0], "");
+            yield return new TestCaseData(new byte[] { 0xcd }, "cd");
+            yield return new TestCaseData(new byte[] { 0xde, 0xad, 0xbe, 0xef }, "deadbeef");
+        }
+
+        [Test]
+        [TestCaseSource(nameof(BytesToHexStringTestCases))]
+        public void BytesToHexStringTests(byte[] bytes, string expected)
+        {
+            ByteUtils.BytesToHexString(bytes).Should().Be(expected);
+        }
+
+        [Test]
+        public void BytesToHexStringShouldThrowWhenGivenNullTest()
+        {
+            Action a = () => ByteUtils.BytesToHexString(null).Should();
+            a.Should().ThrowExactly<ArgumentNullException>();
+        }
     }
 }
